@@ -39,6 +39,13 @@ class TaskCubit extends Cubit<InitialState>{
     emit(InitialState(listOfTasks: list_of_tasks));
   }
 
+  void editStatus(int index, String isDone, List<Task> list_of_tasks) async {
+    list_of_tasks[index].isDone = isDone;
+    list_of_tasks[index].status = statesCheck(index, isDone, list_of_tasks);
+    await SQLHelper.updateItem(list_of_tasks[index]);
+    emit(InitialState(listOfTasks: list_of_tasks));
+  }
+
   void editTask(int id, int index, String title, String dueDate, String finishedTime, List<Task> list_of_tasks) async {
     // list_of_tasks = await SQLHelper.getAllItems();
     list_of_tasks[index].id=id;
@@ -50,20 +57,19 @@ class TaskCubit extends Cubit<InitialState>{
     emit(InitialState(listOfTasks: list_of_tasks));
   }
 
-  // void statesCheck(int index, List<Task> tasks){
-  //   _refreshList();
-  //   if(tasks[index].isDone=='true'){
-  //     emit(InitialState(state: "Completed", listOfTasks: tasks));
-  //   }
-  //   else if((tasks[index].isDone=='false')&&
-  //       (DateFormat('dd-MM-yyyy').parse(_changedlist[index]['dueDate']).isBefore(DateTime.now()))
-  //       && (DateFormat('hh:mm').parse(_changedlist[index]['finishedTime']).hour<=DateTime.now().hour
-  //           && DateFormat('hh:mm').parse(_changedlist[index]['finishedTime']).minute<=DateTime.now().minute)
-  //   ){
-  //     emit(InitialState(state: "Not Completed"));
-  //   }
-  //   else{
-  //     emit(InitialState(state: "Active"));
-  //   }
-  // }
+  static TaskStatus statesCheck(int index, String isDone, List<Task> tasks){
+    if(isDone=='true'){
+      return TaskStatus.Completed;
+    }
+    else if((isDone=='false')&&
+        (DateFormat('dd-MM-yyyy').parse(tasks[index].dueDate).isBefore(DateTime.now()))
+        && (DateFormat('hh:mm').parse(tasks[index].finishedTime).hour<=DateTime.now().hour
+            && DateFormat('hh:mm').parse(tasks[index].finishedTime).minute<=DateTime.now().minute)
+    ){
+      return TaskStatus.NotCompleted;
+    }
+    else{
+      return TaskStatus.Active;
+    }
+  }
 }

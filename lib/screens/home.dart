@@ -229,15 +229,16 @@ class _HomeState extends State<Home> {
                             if (val == true) {
                               // SQLHelper.updateStatus(_listOfWorks[index]['id'], "true");
                               state.listOfTasks[index].isDone = "true";
-                              state.listOfTasks[index].status = TaskStatus.Completed;
-                              // BlocProvider.of<TaskCubit>(context).statesCheck(index, listOfTasks);
+                              // state.listOfTasks[index].status = TaskStatus.Completed;
+                              context.read<TaskCubit>().editStatus(index, "true", state.listOfTasks);
 
                               // _runFilter(_searchBarController.text.trim());
                             }
                             else {
                               state.listOfTasks[index].isDone = "false";
-                              state.listOfTasks[index].status = TaskStatus.Active;
-                              // BlocProvider.of<TaskCubit>(context).statesCheck(index, listOfTasks);
+                              // state.listOfTasks[index].status = TaskStatus.Active;
+                              context.read<TaskCubit>().editStatus(index, "false", state.listOfTasks);
+
                               // _runFilter(_searchBarController.text.trim());
                             }
                           });
@@ -261,7 +262,7 @@ class _HomeState extends State<Home> {
                           children: [
                             Text(
                               state.listOfTasks[index].status.name, style: TextStyle(
-                                fontSize: 18),),
+                                fontSize: 16.5),),
                             SizedBox(
                               height: 30,
                               child: Row(

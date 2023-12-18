@@ -34,12 +34,10 @@ class ListViewCard extends StatelessWidget{
           value: toBoolean(listOfTask[index].isDone),
           onChanged: (val) {
               if (val == true) {
-                // state.listOfTasks[index].isDone = "true";
                 contexts.read<TaskCubit>().editStatus(index, "true", listOfTask);
                 // _runFilter(_searchBarController.text.trim());
               }
               else {
-                // state.listOfTasks[index].isDone = "false";
                 contexts.read<TaskCubit>().editStatus(index, "false", listOfTask);
                 // _runFilter(_searchBarController.text.trim());
               }
@@ -78,8 +76,7 @@ class ListViewCard extends StatelessWidget{
                         onPressed: () async {
                           contexts.read<TaskCubit>().deleteTask(index, listOfTask);
                           Util.snackBar(contexts, "Work has been deleted...");
-                          // _runFilter(
-                          //     _searchBarController.text.trim());
+                          // _runFilter(_searchBarController.text.trim());
                         },
                         icon: const Icon(Icons.delete)
                     )

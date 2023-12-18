@@ -1,11 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:meta/meta.dart';
 import 'package:simple_todo_list_app/sqlite_files/sql_helper.dart';
-import '../model_layer/Task.dart';
+import '../model_layer/task.dart';
 
 
-part 'states.dart';
+part 'task_listing.dart';
 
 class TaskCubit extends Cubit<TaskListing>{
 

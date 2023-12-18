@@ -3,10 +3,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:simple_todo_list_app/bloc/cubit.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simple_todo_list_app/screens/bottomsheet.dart';
+import 'package:simple_todo_list_app/screens/bottom_sheet.dart';
 import 'package:simple_todo_list_app/sqlite_files/sql_helper.dart';
-import '../model_layer/Task.dart';
-import 'listViewCard.dart';
+import '../model_layer/task.dart';
+import 'list_view_card.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);

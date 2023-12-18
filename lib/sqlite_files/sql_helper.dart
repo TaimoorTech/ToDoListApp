@@ -1,6 +1,6 @@
 import 'package:sqflite/sqflite.dart' as sql;
 
-import '../model_layer/Task.dart';
+import '../model_layer/task.dart';
 
 class SQLHelper {
   static Future<void> createTables(sql.Database database) async{

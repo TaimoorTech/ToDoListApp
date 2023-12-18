@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simple_todo_list_app/model_layer/Task.dart';
+import 'package:simple_todo_list_app/model_layer/task.dart';
 import 'package:intl/intl.dart' as intl;
 
 
 import '../bloc/cubit.dart';
-import '../utils/Util.dart';
+import '../utils/util.dart';
 
 class ModelBottomSheet extends StatelessWidget {
 

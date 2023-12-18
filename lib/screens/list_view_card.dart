@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simple_todo_list_app/screens/bottomsheet.dart';
+import 'package:simple_todo_list_app/screens/bottom_sheet.dart';
 
 import '../bloc/cubit.dart';
-import '../model_layer/Task.dart';
-import '../utils/Util.dart';
+import '../model_layer/task.dart';
+import '../utils/util.dart';
 import 'home.dart';
 
 class ListViewCard extends StatelessWidget{

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:simple_todo_list_app/bloc/cubit.dart';
-import 'package:intl/intl.dart' as intl;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simple_todo_list_app/screens/bottom_sheet.dart';
 import 'package:simple_todo_list_app/sqlite_files/sql_helper.dart';
@@ -32,17 +30,6 @@ class _HomeState extends State<Home> {
     super.initState();
   }
 
-  void display_message(String message){
-    Fluttertoast.showToast(
-        msg: message,
-        textColor: Colors.black,
-        fontSize: 15,
-        timeInSecForIosWeb: 2,
-        backgroundColor: Colors.blue,
-        gravity: ToastGravity.BOTTOM,
-        toastLength: Toast.LENGTH_LONG);
-  }
-
   void showForm(int? id, int index, List<Task> listOfTask) {
 
     if(id != null){
@@ -70,7 +57,7 @@ class _HomeState extends State<Home> {
          backgroundColor: Colors.white,
           appBar: AppBar(
             elevation: 5,
-            title: Text("ToDo List App"),
+            title: const Text("ToDo List App"),
             centerTitle: true,
           ),
           floatingActionButton: FloatingActionButton(
@@ -81,21 +68,21 @@ class _HomeState extends State<Home> {
                 _finishedTimeController.text='';
                 showForm(null, 0, list);
               },
-              child: Icon(
+              child: const Icon(
                 Icons.add
               ),
           ),
           body: Container(
-            margin: EdgeInsets.only(top: 30),
-            padding: EdgeInsets.symmetric(horizontal: 15),
+            margin: const EdgeInsets.only(top: 30),
+            padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 searchBar(),
-                SizedBox(height: 30),
-                Text("All Tasks", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
+                const Text("All Tasks", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),),
+                const SizedBox(height: 30),
                 showList()
 
               ],
@@ -139,13 +126,13 @@ class _HomeState extends State<Home> {
   Widget searchBar() {
     return Container(
       height: 44,
-      padding: EdgeInsets.symmetric(horizontal: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 5),
       decoration: BoxDecoration(
           color: Colors.blue,
           borderRadius: BorderRadius.circular(16)
       ),
       child:  TextField(//Search Bar
-        style: TextStyle(color: Colors.white,
+        style: const TextStyle(color: Colors.white,
             fontSize: 19),
         controller: _searchBarController,
         onChanged: (value) => {
@@ -157,7 +144,7 @@ class _HomeState extends State<Home> {
         cursorWidth: 2,
         cursorHeight: 20,
         cursorColor: Colors.white,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
             prefixIcon: Icon(
               Icons.search_sharp,
               color: Colors.white,

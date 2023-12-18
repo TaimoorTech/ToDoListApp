@@ -1,6 +1,3 @@
-
-import 'package:simple_todo_list_app/sqlite_files/sql_helper.dart';
-
 enum TaskStatus{Active, Completed, NotCompleted}
 
 class Task{
@@ -26,26 +23,26 @@ class Task{
 
   Map<String, dynamic> toMap(){
     return{
-      'id':this.id,
-      'title': this.title,
-      'dueDate': this.dueDate,
-      'finishedTime': this.finishedTime,
-      'status': this.status.name,
-      'isDone': this.isDone
+      'id':id,
+      'title': title,
+      'dueDate': dueDate,
+      'finishedTime': finishedTime,
+      'status': status.name,
+      'isDone': isDone
     };
   }
 
   static Task fromMap(Map<String, dynamic> map){
-    String Status = map['status'];
-    var task;
-    if(Status=="Active"){
-      task = TaskStatus.Active;
-    }
-    else if(Status=="Completed"){
+    String status = map['status'];
+    TaskStatus task;
+    if(status=="Completed"){
       task = TaskStatus.Completed;
     }
-    else if(Status=="NotCompleted"){
+    else if(status=="NotCompleted"){
       task = TaskStatus.NotCompleted;
+    }
+    else{
+      task = TaskStatus.Active;
     }
     return Task(
         id: map['id'],

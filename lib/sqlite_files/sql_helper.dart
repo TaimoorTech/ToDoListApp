@@ -61,9 +61,7 @@ class SQLHelper {
     try{
       await db.delete("items", where: "id = ?", whereArgs: [id]);
     }
-    catch (err){
-
-    }
+    catch (err){err.toString();}
   }
 
   static Future<int> updateStatus(int id, String status)async {

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simple_todo_list_app/screens/bottom_sheet.dart';
-
 import '../bloc/cubit.dart';
 import '../model_layer/task.dart';
 import '../utils/util.dart';
-import 'home.dart';
+
 
 class ListViewCard extends StatelessWidget{
 
@@ -16,7 +14,7 @@ class ListViewCard extends StatelessWidget{
 
   final BuildContext contexts;
   final Function function;
-  final id;
+  final dynamic id;
   final int index;
   final List<Task> listOfTask;
   final TextEditingController titleController;
@@ -27,10 +25,10 @@ class ListViewCard extends StatelessWidget{
   Widget build(BuildContext context) {
     // TODO: implement build
     return Card(
-      shape: StadiumBorder(side: BorderSide(color: Colors.blue, width: 2.6)),
+      shape: const StadiumBorder(side: BorderSide(color: Colors.blue, width: 2.6)),
       elevation: 15,
       color: Colors.white,
-      margin: EdgeInsets.only(bottom: 40),
+      margin: const EdgeInsets.only(bottom: 40),
       child: ListTile(
         leading: Checkbox(
           value: toBoolean(listOfTask[index].isDone),
@@ -48,14 +46,12 @@ class ListViewCard extends StatelessWidget{
           },
         ),
         title: Text(listOfTask[index].title,
-          style: TextStyle(
+          style: const TextStyle(
               color: Colors.blue, fontWeight: FontWeight.bold),
         ),
         subtitle: Text(
-          "Due Date : " + listOfTask[index].dueDate + "\n"
-              + "Finished Time : " +
-              listOfTask[index].finishedTime,
-          style: TextStyle(color: Colors.black),
+          "Due Date : ${listOfTask[index].dueDate}\nFinished Time : ${listOfTask[index].finishedTime}",
+          style: const TextStyle(color: Colors.black),
         ),
         trailing: SizedBox(
           width: 114,
@@ -75,7 +71,7 @@ class ListViewCard extends StatelessWidget{
                         onPressed: () {
                           function(id, index, listOfTask);
                         },
-                        icon: Icon(Icons.edit)
+                        icon: const Icon(Icons.edit)
                     ),
                     IconButton(
                         color: Colors.black,
@@ -85,7 +81,7 @@ class ListViewCard extends StatelessWidget{
                           // _runFilter(
                           //     _searchBarController.text.trim());
                         },
-                        icon: Icon(Icons.delete)
+                        icon: const Icon(Icons.delete)
                     )
                   ],
                 ),
@@ -101,9 +97,9 @@ class ListViewCard extends StatelessWidget{
   Widget statusApplied(String status){
     if(status=="Completed"){
       return RichText(
-          text: TextSpan(children: [
+          text: const TextSpan(children: [
             WidgetSpan(child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                padding: EdgeInsets.symmetric(horizontal: 2.0),
                 child: Icon(Icons.check_circle_rounded, size: 16, color: Colors.green)),
             ),
             TextSpan(text: 'Completed', style: TextStyle(color: Colors.green,
@@ -114,9 +110,9 @@ class ListViewCard extends StatelessWidget{
     }
     else if(status=="NotCompleted"){
       return RichText(
-          text: TextSpan(children: [
+          text: const TextSpan(children: [
             WidgetSpan(child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                padding: EdgeInsets.symmetric(horizontal: 2.0),
                 child: Icon(Icons.close_rounded, size: 15, color: Colors.red)),
             ),
             TextSpan(text: 'NotCompleted', style: TextStyle(color: Colors.red,
@@ -127,9 +123,9 @@ class ListViewCard extends StatelessWidget{
     }
     else{
       return RichText(
-          text: TextSpan(children: [
+          text: const TextSpan(children: [
             WidgetSpan(child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                padding: EdgeInsets.symmetric(horizontal: 2.0),
                 child: Icon(Icons.circle, size: 16, color: Colors.green)),
             ),
             TextSpan(text: 'Active', style: TextStyle(color: Colors.green,

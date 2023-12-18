@@ -9,7 +9,7 @@ import '../utils/util.dart';
 
 class ModelBottomSheet extends StatelessWidget {
 
-  const ModelBottomSheet({required this.id, required this.contexts,
+  const ModelBottomSheet({super.key, required this.id, required this.contexts,
     required this.index, required this.listOfTask, required this.titleController,
     required this.dueDateController, required this.finishedTimeController
   });
@@ -38,7 +38,7 @@ class ModelBottomSheet extends StatelessWidget {
             decoration: const InputDecoration(
                 labelText: "Title", hintText: "Title"),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           TextField(
             controller: dueDateController,
             decoration: const InputDecoration(
@@ -58,7 +58,7 @@ class ModelBottomSheet extends StatelessWidget {
               }
             },
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           TextField(
             controller: finishedTimeController,
             decoration: const InputDecoration(
@@ -82,7 +82,7 @@ class ModelBottomSheet extends StatelessWidget {
               }
             },
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           ElevatedButton(
               onPressed: () async {
                 if (id == null) {

@@ -216,8 +216,7 @@ class _HomeState extends State<Home> {
               itemCount: state.listOfTasks.length,
               itemBuilder: (context, index) =>
                   Card(
-                    shape: StadiumBorder(
-                        side: BorderSide(color: Colors.blue, width: 2.6)),
+                    shape: StadiumBorder(side: BorderSide(color: Colors.blue, width: 2.6)),
                     elevation: 15,
                     color: Colors.white,
                     margin: EdgeInsets.only(bottom: 40),
@@ -227,12 +226,12 @@ class _HomeState extends State<Home> {
                         onChanged: (val) {
                           setState(() {
                             if (val == true) {
-                              state.listOfTasks[index].isDone = "true";
+                              // state.listOfTasks[index].isDone = "true";
                               context.read<TaskCubit>().editStatus(index, "true", state.listOfTasks);
                               // _runFilter(_searchBarController.text.trim());
                             }
                             else {
-                              state.listOfTasks[index].isDone = "false";
+                              // state.listOfTasks[index].isDone = "false";
                               context.read<TaskCubit>().editStatus(index, "false", state.listOfTasks);
                               // _runFilter(_searchBarController.text.trim());
                             }
@@ -255,9 +254,7 @@ class _HomeState extends State<Home> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text(
-                              state.listOfTasks[index].status.name, style: TextStyle(
-                                fontSize: 16.5),),
+                            statusApplied(state.listOfTasks[index].status.name),
                             SizedBox(
                               height: 30,
                               child: Row(
@@ -273,15 +270,9 @@ class _HomeState extends State<Home> {
                                   IconButton(
                                       color: Colors.black,
                                       onPressed: () async {
-                                        context.read<TaskCubit>()
-                                            .deleteTask(index, state.listOfTasks);
-
-                                        SnackBar snackBar = SnackBar(
-                                          content: Text(
-                                              "Work has been deleted..."),
-                                          elevation: 5,);
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(snackBar);
+                                        context.read<TaskCubit>().deleteTask(index, state.listOfTasks);
+                                        SnackBar snackBar = SnackBar(content: Text("Work has been deleted..."), elevation: 5,);
+                                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                         // _runFilter(
                                         //     _searchBarController.text.trim());
                                       },
@@ -314,6 +305,48 @@ class _HomeState extends State<Home> {
   //     // _refresh();
   //   });
   // }
+  
+  Widget statusApplied(String status){
+    if(status=="Completed"){
+      return RichText(
+          text: TextSpan(children: [
+                WidgetSpan(child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                    child: Icon(Icons.check_circle_rounded, size: 16, color: Colors.green)),
+                ),
+                TextSpan(text: 'Completed', style: TextStyle(color: Colors.green,
+                    fontWeight: FontWeight.bold)),
+              ]
+          )
+      );
+    }
+    else if(status=="NotCompleted"){
+      return RichText(
+          text: TextSpan(children: [
+            WidgetSpan(child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                child: Icon(Icons.close_rounded, size: 15, color: Colors.red)),
+            ),
+            TextSpan(text: 'NotCompleted', style: TextStyle(color: Colors.red,
+                fontWeight: FontWeight.bold)),
+          ]
+          )
+      );
+    }
+    else{
+      return RichText(
+          text: TextSpan(children: [
+            WidgetSpan(child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                child: Icon(Icons.circle, size: 16, color: Colors.green)),
+            ),
+            TextSpan(text: 'Active', style: TextStyle(color: Colors.green,
+                fontWeight: FontWeight.bold)),
+          ]
+          )
+      );
+    }
+  }
 
   Widget searchBar() {
     return Container(

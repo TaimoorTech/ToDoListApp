@@ -1,11 +1,9 @@
 part of 'cubit.dart';
 
-class InitialState{
-  // String state;
+class TaskListing{
   List<Task> listOfTasks;
 
-  InitialState({
-    // required this.state,
+  TaskListing({
     required this.listOfTasks
   }); // we define initial state
 

@@ -7,36 +7,36 @@ import '../model_layer/Task.dart';
 
 part 'states.dart';
 
-class TaskCubit extends Cubit<InitialState>{
+class TaskCubit extends Cubit<TaskListing>{
 
-  TaskCubit() : super(InitialState(listOfTasks: [])){
+  TaskCubit() : super(TaskListing(listOfTasks: [])){
     getAllItems();
   }
 
   void getAllItems() async {
     List<Task> list_of_tasks = await SQLHelper.getAllItems();
-    emit(InitialState(listOfTasks: list_of_tasks));
+    emit(TaskListing(listOfTasks: list_of_tasks));
   }
 
 
   void addTask(Task newTask, List<Task> list_of_tasks) async {
     await SQLHelper.createItem(newTask);
     list_of_tasks.add(newTask);
-    emit(InitialState(listOfTasks: list_of_tasks));
+    emit(TaskListing(listOfTasks: list_of_tasks));
   }
 
   void deleteTask(int index, List<Task> list_of_tasks) async {
 
     await SQLHelper.deleteItem(list_of_tasks[index].id);
     list_of_tasks.removeAt(index);
-    emit(InitialState(listOfTasks: list_of_tasks));
+    emit(TaskListing(listOfTasks: list_of_tasks));
   }
 
   void editStatus(int index, String isDone, List<Task> list_of_tasks) async {
     list_of_tasks[index].isDone = isDone;
     list_of_tasks[index].status = statesCheck(index, isDone, list_of_tasks);
     await SQLHelper.updateItem(list_of_tasks[index]);
-    emit(InitialState(listOfTasks: list_of_tasks));
+    emit(TaskListing(listOfTasks: list_of_tasks));
   }
 
   void editTask(int id, int index, String title, String dueDate, String finishedTime, List<Task> list_of_tasks) async {
@@ -45,7 +45,7 @@ class TaskCubit extends Cubit<InitialState>{
     list_of_tasks[index].dueDate=dueDate;
     list_of_tasks[index].finishedTime=finishedTime;
     await SQLHelper.updateItem(list_of_tasks[index]);
-    emit(InitialState(listOfTasks: list_of_tasks));
+    emit(TaskListing(listOfTasks: list_of_tasks));
   }
 
   static TaskStatus statesCheck(int index, String isDone, List<Task> tasks){

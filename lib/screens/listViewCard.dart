@@ -4,15 +4,18 @@ import 'package:simple_todo_list_app/screens/bottomsheet.dart';
 
 import '../bloc/cubit.dart';
 import '../model_layer/Task.dart';
+import '../utils/Util.dart';
+import 'home.dart';
 
-class listViewCard extends StatelessWidget{
+class ListViewCard extends StatelessWidget{
 
-  const listViewCard({required this.id, required this.context,
+  const ListViewCard({super.key, required this.function, required this.id, required this.contexts,
     required this.index, required this.listOfTask, required this.titleController,
     required this.dueDateController, required this.finishedTimeController
   });
 
-  final BuildContext context;
+  final BuildContext contexts;
+  final Function function;
   final id;
   final int index;
   final List<Task> listOfTask;
@@ -34,12 +37,12 @@ class listViewCard extends StatelessWidget{
           onChanged: (val) {
               if (val == true) {
                 // state.listOfTasks[index].isDone = "true";
-                context.read<TaskCubit>().editStatus(index, "true", listOfTask);
+                contexts.read<TaskCubit>().editStatus(index, "true", listOfTask);
                 // _runFilter(_searchBarController.text.trim());
               }
               else {
                 // state.listOfTasks[index].isDone = "false";
-                context.read<TaskCubit>().editStatus(index, "false", listOfTask);
+                contexts.read<TaskCubit>().editStatus(index, "false", listOfTask);
                 // _runFilter(_searchBarController.text.trim());
               }
           },
@@ -70,21 +73,15 @@ class listViewCard extends StatelessWidget{
                     IconButton(
                         color: Colors.black,
                         onPressed: () {
-                          bottomSheet sheet2 = bottomSheet(
-                              id: listOfTask[index].id, context: context, index: index,
-                              listOfTask: listOfTask,
-                              titleController: titleController, dueDateController: dueDateController,
-                              finishedTimeController: finishedTimeController);
-                          sheet2.showForm();
+                          function(id, index, listOfTask);
                         },
                         icon: Icon(Icons.edit)
                     ),
                     IconButton(
                         color: Colors.black,
                         onPressed: () async {
-                          context.read<TaskCubit>().deleteTask(index, listOfTask);
-                          SnackBar snackBar = SnackBar(content: Text("Work has been deleted..."), elevation: 5,);
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          contexts.read<TaskCubit>().deleteTask(index, listOfTask);
+                          Util.snackBar(contexts, "Work has been deleted...");
                           // _runFilter(
                           //     _searchBarController.text.trim());
                         },

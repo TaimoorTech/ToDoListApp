@@ -227,18 +227,13 @@ class _HomeState extends State<Home> {
                         onChanged: (val) {
                           setState(() {
                             if (val == true) {
-                              // SQLHelper.updateStatus(_listOfWorks[index]['id'], "true");
                               state.listOfTasks[index].isDone = "true";
-                              // state.listOfTasks[index].status = TaskStatus.Completed;
                               context.read<TaskCubit>().editStatus(index, "true", state.listOfTasks);
-
                               // _runFilter(_searchBarController.text.trim());
                             }
                             else {
                               state.listOfTasks[index].isDone = "false";
-                              // state.listOfTasks[index].status = TaskStatus.Active;
                               context.read<TaskCubit>().editStatus(index, "false", state.listOfTasks);
-
                               // _runFilter(_searchBarController.text.trim());
                             }
                           });

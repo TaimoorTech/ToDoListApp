@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 import 'package:simple_todo_list_app/sqlite_files/sql_helper.dart';
-
 import '../model_layer/Task.dart';
 
 
@@ -10,7 +9,9 @@ part 'states.dart';
 
 class TaskCubit extends Cubit<InitialState>{
 
-  TaskCubit() : super(InitialState(listOfTasks: []));
+  TaskCubit() : super(InitialState(listOfTasks: [])){
+    getAllItems();
+  }
 
   void getAllItems() async {
     List<Task> list_of_tasks = await SQLHelper.getAllItems();

@@ -34,11 +34,11 @@ class ListViewCard extends StatelessWidget{
           value: toBoolean(listOfTask[index].isDone),
           onChanged: (val) {
               if (val == true) {
-                contexts.read<TaskCubit>().editStatus(index, "true", listOfTask);
+                contexts.read<TaskCubit>().updateHiveTaskStatus(index, "true", listOfTask);
                 // _runFilter(_searchBarController.text.trim());
               }
               else {
-                contexts.read<TaskCubit>().editStatus(index, "false", listOfTask);
+                contexts.read<TaskCubit>().updateHiveTaskStatus(index, "false", listOfTask);
                 // _runFilter(_searchBarController.text.trim());
               }
           },
@@ -73,8 +73,8 @@ class ListViewCard extends StatelessWidget{
                     ),
                     IconButton(
                         color: Colors.black,
-                        onPressed: () async {
-                          contexts.read<TaskCubit>().deleteTask(index, listOfTask);
+                        onPressed: ()  {
+                          contexts.read<TaskCubit>().deleteHiveTask(index, listOfTask);
                           Util.snackBar(contexts, "Work has been deleted...");
                           // _runFilter(_searchBarController.text.trim());
                         },

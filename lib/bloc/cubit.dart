@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:simple_todo_list_app/hive/hiveBox.dart';
+import 'package:simple_todo_list_app/hive/hiveDatabase.dart';
 import 'package:simple_todo_list_app/sqlite_files/sql_helper.dart';
 import '../model_layer/task.dart';
 
@@ -9,7 +11,43 @@ part 'task_listing.dart';
 class TaskCubit extends Cubit<TaskListing>{
 
   TaskCubit() : super(TaskListing(listOfTasks: [])){
-    getAllItems();
+    // getAllItems();
+    getHiveTask();
+  }
+
+  void getHiveTask() async {
+    List<Task> list_of_tasks = await HiveDatabase.getAllItems();
+    print("list : $list_of_tasks");
+    emit(TaskListing(listOfTasks: list_of_tasks));
+  }
+
+  void putHiveTask(Task newTask, List<Task> list_of_tasks) async{
+    HiveDatabase.addTask(newTask);
+    list_of_tasks.add(newTask);
+    print("list : $list_of_tasks");
+    emit(TaskListing(listOfTasks: list_of_tasks));
+  }
+
+  void deleteHiveTask(int index, List<Task> list_of_tasks) async {
+    await HiveDatabase.deleteItem(list_of_tasks[index].id);
+    list_of_tasks.removeAt(index);
+    emit(TaskListing(listOfTasks: list_of_tasks));
+  }
+
+  void updateHiveTask(int id, int index, String title, String dueDate, String finishedTime, List<Task> list_of_tasks) async {
+    list_of_tasks[index].id=id;
+    list_of_tasks[index].title=title;
+    list_of_tasks[index].dueDate=dueDate;
+    list_of_tasks[index].finishedTime=finishedTime;
+    await HiveDatabase.updateItem(index, list_of_tasks[index]);
+    emit(TaskListing(listOfTasks: list_of_tasks));
+  }
+
+  void updateHiveTaskStatus(int index, String isDone, List<Task> list_of_tasks) async {
+    list_of_tasks[index].isDone = isDone;
+    list_of_tasks[index].status = statesCheck(index, isDone, list_of_tasks);
+    await HiveDatabase.updateItem(index, list_of_tasks[index]);
+    emit(TaskListing(listOfTasks: list_of_tasks));
   }
 
   void getAllItems() async {

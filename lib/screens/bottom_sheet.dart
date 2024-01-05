@@ -97,15 +97,20 @@ class ModelBottomSheet extends StatelessWidget {
                       dueDate: dueDateController.text.toString(),
                       finishedTime: finishedTimeController.text.toString(),
                       status: TaskStatus.Active, isDone: "false");
-                  contexts.read<TaskCubit>().addTask(task, listOfTask);
+                  // contexts.read<TaskCubit>().addTask(task, listOfTask);
+                  contexts.read<TaskCubit>().putHiveTask(task, listOfTask);
                   Util.snackBar(contexts, "Work has been listed...");
                   // _runFilter(_searchBarController.text.trim());
                 }
                 if (id != null){
-                  contexts.read<TaskCubit>()
-                      .editTask(listOfTask[index].id, index, titleController.text.toString(),
-                      dueDateController.text.toString(),
-                      finishedTimeController.text.toString(), listOfTask);
+                  // contexts.read<TaskCubit>()
+                  //     .editTask(listOfTask[index].id, index, titleController.text.toString(),
+                  //     dueDateController.text.toString(),
+                  //     finishedTimeController.text.toString(), listOfTask);
+                  contexts.read<TaskCubit>().updateHiveTask(
+                      id, index, titleController.text.toString(),
+                          dueDateController.text.toString(),
+                          finishedTimeController.text.toString(), listOfTask);
                   Util.snackBar(contexts, "Work has been Updated...");
                   // _runFilter(_searchBarController.text.trim());
                 }

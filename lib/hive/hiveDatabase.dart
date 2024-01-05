@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 
 import '../model_layer/task.dart';
 import 'hiveBox.dart';
@@ -41,8 +42,8 @@ class HiveDatabase{
     String title = values['title'];
     String dueDate = values['dueDate'];
     String finishedTime = values['finishedTime'];
-    String status = values['status'];
     String isDone = values['isDone'];
+    String status = statesCheck(isDone, newTask).name;
     taskBox.put('$id', HiveDatabase(id: id, title: title, dueDate: dueDate, finishedTime: finishedTime, status: status, isDone: isDone));
     return id;
   }
@@ -89,6 +90,63 @@ class HiveDatabase{
     'isDone' : isDone};
     
     return map;
+  }
+
+  static TaskStatus statesCheck(String isDone, Task task){
+    int dueDate_day = DateFormat('dd-MM-yyyy').parse(task.dueDate).day;
+    int dueDate_month = DateFormat('dd-MM-yyyy').parse(task.dueDate).month;
+    int dueDate_year = DateFormat('dd-MM-yyyy').parse(task.dueDate).year;
+    int dueDate_hour = DateFormat('hh:mm').parse(task.finishedTime).hour;
+    int dueDate_min = DateFormat('hh:mm').parse(task.finishedTime).minute;
+
+    int now_day = DateTime.now().day;
+    int now_month = DateTime.now().month;
+    int now_year = DateTime.now().year;
+    int now_hour = DateTime.now().hour;
+    int now_min = DateTime.now().minute;
+
+    bool dueDateBeforeCheck;
+    if(dueDate_year<=now_year && dueDate_month<=now_month && dueDate_day<=now_day){
+      dueDateBeforeCheck = true;
+    }
+    else{
+      dueDateBeforeCheck = false;
+    }
+
+    bool dueDateAtCheck;
+    if(dueDate_year==now_year && dueDate_month==now_month && dueDate_day==now_day){
+      dueDateAtCheck = true;
+    }
+    else{
+      dueDateAtCheck = false;
+    }
+
+    bool check1 = dueDateBeforeCheck;
+    bool check2 = dueDateAtCheck;
+    bool check3 = (dueDate_hour<now_hour && dueDate_min<now_min);
+    bool check4 = (dueDate_hour<=now_hour);
+    bool check5 = (dueDate_hour==now_hour && now_hour<=now_min);
+    if(isDone=='true'){
+      return TaskStatus.Completed;
+    }
+    else{
+      if(check2){
+        if(check3 || check4 || check5){
+          return TaskStatus.NotCompleted;
+        }
+        else{
+          return TaskStatus.Active;
+        }
+      }
+      else if(check1)
+      {
+        return TaskStatus.NotCompleted;
+      }
+      else{
+        return TaskStatus.Active;
+      }
+    }
+
   }
 
 }

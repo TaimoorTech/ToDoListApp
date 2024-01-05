@@ -23,7 +23,7 @@ class TaskCubit extends Cubit<TaskListing>{
 
   void putHiveTask(Task newTask, List<Task> list_of_tasks) async{
     HiveDatabase.addTask(newTask);
-    list_of_tasks.add(newTask);
+    list_of_tasks = await HiveDatabase.getAllItems();
     print("list : $list_of_tasks");
     emit(TaskListing(listOfTasks: list_of_tasks));
   }
@@ -39,7 +39,9 @@ class TaskCubit extends Cubit<TaskListing>{
     list_of_tasks[index].title=title;
     list_of_tasks[index].dueDate=dueDate;
     list_of_tasks[index].finishedTime=finishedTime;
+    list_of_tasks[index].status = statesCheck(index, list_of_tasks[index].isDone, list_of_tasks);
     await HiveDatabase.updateItem(index, list_of_tasks[index]);
+    list_of_tasks = await HiveDatabase.getAllItems();
     emit(TaskListing(listOfTasks: list_of_tasks));
   }
 
@@ -86,18 +88,59 @@ class TaskCubit extends Cubit<TaskListing>{
   }
 
   static TaskStatus statesCheck(int index, String isDone, List<Task> tasks){
+    int dueDate_day = DateFormat('dd-MM-yyyy').parse(tasks[index].dueDate).day;
+    int dueDate_month = DateFormat('dd-MM-yyyy').parse(tasks[index].dueDate).month;
+    int dueDate_year = DateFormat('dd-MM-yyyy').parse(tasks[index].dueDate).year;
+    int dueDate_hour = DateFormat('hh:mm').parse(tasks[index].finishedTime).hour;
+    int dueDate_min = DateFormat('hh:mm').parse(tasks[index].finishedTime).minute;
+
+    int now_day = DateTime.now().day;
+    int now_month = DateTime.now().month;
+    int now_year = DateTime.now().year;
+    int now_hour = DateTime.now().hour;
+    int now_min = DateTime.now().minute;
+
+    bool dueDateBeforeCheck;
+    if(dueDate_year<=now_year && dueDate_month<=now_month && dueDate_day<=now_day){
+      dueDateBeforeCheck = true;
+    }
+    else{
+      dueDateBeforeCheck = false;
+    }
+
+    bool dueDateAtCheck;
+    if(dueDate_year==now_year && dueDate_month==now_month && dueDate_day==now_day){
+      dueDateAtCheck = true;
+    }
+    else{
+      dueDateAtCheck = false;
+    }
+
+    bool check1 = dueDateBeforeCheck;
+    bool check2 = dueDateAtCheck;
+    bool check3 = (dueDate_hour<now_hour && dueDate_min<now_min);
+    bool check4 = (dueDate_hour<=now_hour);
+    bool check5 = (dueDate_hour==now_hour && now_hour<=now_min);
     if(isDone=='true'){
       return TaskStatus.Completed;
     }
-    else if((isDone=='false')&&
-        (DateFormat('dd-MM-yyyy').parse(tasks[index].dueDate).isBefore(DateTime.now()))
-        && (DateFormat('hh:mm').parse(tasks[index].finishedTime).hour<=DateTime.now().hour
-            && DateFormat('hh:mm').parse(tasks[index].finishedTime).minute<=DateTime.now().minute)
-    ){
-      return TaskStatus.NotCompleted;
-    }
     else{
-      return TaskStatus.Active;
+      if(check2){
+        if(check3 || check4 || check5){
+          return TaskStatus.NotCompleted;
+        }
+        else{
+          return TaskStatus.Active;
+        }
+      }
+      else if(check1)
+      {
+        return TaskStatus.NotCompleted;
+      }
+      else{
+        return TaskStatus.Active;
+      }
     }
+
   }
 }

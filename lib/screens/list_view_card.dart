@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
+import 'package:simple_todo_list_app/hive/hiveBox.dart';
 import '../bloc/cubit.dart';
+import '../hive/hiveDatabase.dart';
 import '../model_layer/task.dart';
 import '../utils/util.dart';
 
@@ -32,13 +35,17 @@ class ListViewCard extends StatelessWidget{
       child: ListTile(
         leading: Checkbox(
           value: toBoolean(listOfTask[index].isDone),
-          onChanged: (val) {
+          onChanged: (val) async {
               if (val == true) {
+                taskBox = await Hive.openBox<HiveDatabase>('taskBox');
                 contexts.read<TaskCubit>().updateHiveTaskStatus(index, "true", listOfTask);
+                HiveDatabase.HiveClose();
                 // _runFilter(_searchBarController.text.trim());
               }
               else {
+                taskBox = await Hive.openBox<HiveDatabase>('taskBox');
                 contexts.read<TaskCubit>().updateHiveTaskStatus(index, "false", listOfTask);
+                HiveDatabase.HiveClose();
                 // _runFilter(_searchBarController.text.trim());
               }
           },
@@ -73,8 +80,10 @@ class ListViewCard extends StatelessWidget{
                     ),
                     IconButton(
                         color: Colors.black,
-                        onPressed: ()  {
+                        onPressed: ()  async {
+                          taskBox = await Hive.openBox<HiveDatabase>('taskBox');
                           contexts.read<TaskCubit>().deleteHiveTask(index, listOfTask);
+                          HiveDatabase.HiveClose();
                           Util.snackBar(contexts, "Work has been deleted...");
                           // _runFilter(_searchBarController.text.trim());
                         },

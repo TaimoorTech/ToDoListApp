@@ -64,7 +64,9 @@ class _HomeState extends State<Home> {
           floatingActionButton: FloatingActionButton(
               onPressed: () async {
                 // List<Task> list = await SQLHelper.getAllItems();
+                HiveDatabase.HiveReopen();
                 List<Task> list = await HiveDatabase.getAllItems();
+                HiveDatabase.HiveClose();
                 _titleController.text='';
                 _dueDateController.text='';
                 _finishedTimeController.text='';

@@ -92,6 +92,14 @@ class HiveDatabase{
     return map;
   }
 
+  static HiveReopen() async {
+    taskBox = await Hive.openBox<HiveDatabase>('taskBox');
+  }
+
+  static HiveClose(){
+    taskBox.close();
+  }
+
   static TaskStatus statesCheck(String isDone, Task task){
     int dueDate_day = DateFormat('dd-MM-yyyy').parse(task.dueDate).day;
     int dueDate_month = DateFormat('dd-MM-yyyy').parse(task.dueDate).month;

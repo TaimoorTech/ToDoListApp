@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
+import 'package:simple_todo_list_app/hive/hiveBox.dart';
 import 'package:simple_todo_list_app/model_layer/task.dart';
 import 'package:intl/intl.dart' as intl;
 
 
 import '../bloc/cubit.dart';
+import '../hive/hiveDatabase.dart';
 import '../utils/util.dart';
 
 class ModelBottomSheet extends StatelessWidget {
@@ -98,7 +101,9 @@ class ModelBottomSheet extends StatelessWidget {
                       finishedTime: finishedTimeController.text.toString(),
                       status: TaskStatus.Active, isDone: "false");
                   // contexts.read<TaskCubit>().addTask(task, listOfTask);
+                  taskBox = await Hive.openBox<HiveDatabase>('taskBox');
                   contexts.read<TaskCubit>().putHiveTask(task, listOfTask);
+                  HiveDatabase.HiveClose();
                   Util.snackBar(contexts, "Work has been listed...");
                   // _runFilter(_searchBarController.text.trim());
                 }
@@ -107,10 +112,12 @@ class ModelBottomSheet extends StatelessWidget {
                   //     .editTask(listOfTask[index].id, index, titleController.text.toString(),
                   //     dueDateController.text.toString(),
                   //     finishedTimeController.text.toString(), listOfTask);
+                  taskBox = await Hive.openBox<HiveDatabase>('taskBox');
                   contexts.read<TaskCubit>().updateHiveTask(
                       id, index, titleController.text.toString(),
                           dueDateController.text.toString(),
                           finishedTimeController.text.toString(), listOfTask);
+                  HiveDatabase.HiveClose();
                   Util.snackBar(contexts, "Work has been Updated...");
                   // _runFilter(_searchBarController.text.trim());
                 }

@@ -9,6 +9,7 @@ part 'hiveDatabase.g.dart';
 @HiveType(typeId: 1)
 class HiveDatabase{
 
+
   HiveDatabase({
     required this.id,
     required this.title,
@@ -16,6 +17,7 @@ class HiveDatabase{
     required this.finishedTime,
     required this.status,
     required this.isDone,
+    required this.imageTask,
   });
 
   @HiveField(0)
@@ -36,7 +38,10 @@ class HiveDatabase{
   @HiveField(5)
   String isDone;
 
-  static int addTask(Task newTask){
+  @HiveField(6)
+  String imageTask;
+
+  static int addTask(Tasks newTask){
     int id = newTask.toMap()['id'];
     Map<String, dynamic> values = newTask.toMap();
     String title = values['title'];
@@ -44,11 +49,12 @@ class HiveDatabase{
     String finishedTime = values['finishedTime'];
     String isDone = values['isDone'];
     String status = statesCheck(isDone, newTask).name;
-    taskBox.put('$id', HiveDatabase(id: id, title: title, dueDate: dueDate, finishedTime: finishedTime, status: status, isDone: isDone));
+    // String image = values['image'];
+    taskBox.put('$id', HiveDatabase(id: id, title: title, dueDate: dueDate, finishedTime: finishedTime, status: status, isDone: isDone, imageTask: newTask.imageTask));
     return id;
   }
 
-  static Future<void> updateItem(int index, Task updatedTask) async {
+  static Future<void> updateItem(int index, Tasks updatedTask) async {
     Map<String, dynamic> values = updatedTask.toMap();
     int id = updatedTask.id;
     String title = updatedTask.title;
@@ -56,7 +62,8 @@ class HiveDatabase{
     String finishedTime = updatedTask.finishedTime;
     String status = values['status'];
     String isDone = updatedTask.isDone;
-    taskBox.putAt(index, HiveDatabase(id: id, title: title, dueDate: dueDate, finishedTime: finishedTime, status: status, isDone: isDone));
+    String image = updatedTask.imageTask;
+    taskBox.putAt(index, HiveDatabase(id: id, title: title, dueDate: dueDate, finishedTime: finishedTime, status: status, isDone: isDone, imageTask: image));
   }
 
   static Future<void> deleteItem(int id) async {
@@ -64,7 +71,7 @@ class HiveDatabase{
     print("task box: $taskBox");
   }
 
-  static Future<List<Task>> getAllItems() async {
+  static Future<List<Tasks>> getAllItems() async {
     // final Map<dynamic, dynamic> result = taskBox.g;
     final result = taskBox.toMap().map(
           (k, e) => MapEntry(
@@ -74,7 +81,7 @@ class HiveDatabase{
     List<Map<String, dynamic>> resultList = [];
     result.values.forEach((v) => resultList.add(v));
     // taskBox.ge
-    return resultList.map(Task.fromMap).toList();
+    return resultList.map(Tasks.fromMap).toList();
   }
   
   static Map<String, dynamic> conversion(HiveDatabase db_val) {
@@ -84,10 +91,11 @@ class HiveDatabase{
     String finishedTime = db_val.finishedTime;
     String status = db_val.status;
     String isDone = db_val.isDone;
-    
+    String imageTask = db_val.imageTask;
+
     Map<String, dynamic> map = {'id' : id, 'title': title,
     'dueDate' : dueDate, 'finishedTime' : finishedTime, 'status' : status,
-    'isDone' : isDone};
+    'isDone' : isDone, 'imageTask': imageTask};
     
     return map;
   }
@@ -100,7 +108,7 @@ class HiveDatabase{
     taskBox.close();
   }
 
-  static TaskStatus statesCheck(String isDone, Task task){
+  static TaskStatus statesCheck(String isDone, Tasks task){
     int dueDate_day = DateFormat('dd-MM-yyyy').parse(task.dueDate).day;
     int dueDate_month = DateFormat('dd-MM-yyyy').parse(task.dueDate).month;
     int dueDate_year = DateFormat('dd-MM-yyyy').parse(task.dueDate).year;

@@ -19,7 +19,7 @@ class ListViewCard extends StatelessWidget{
   final Function function;
   final dynamic id;
   final int index;
-  final List<Task> listOfTask;
+  final List<Tasks> listOfTask;
   final TextEditingController titleController;
   final TextEditingController dueDateController;
   final TextEditingController finishedTimeController;
@@ -33,22 +33,28 @@ class ListViewCard extends StatelessWidget{
       color: Colors.white,
       margin: const EdgeInsets.only(bottom: 40),
       child: ListTile(
-        leading: Checkbox(
-          value: toBoolean(listOfTask[index].isDone),
-          onChanged: (val) async {
-              if (val == true) {
-                taskBox = await Hive.openBox<HiveDatabase>('taskBox');
-                contexts.read<TaskCubit>().updateHiveTaskStatus(index, "true", listOfTask);
-                HiveDatabase.HiveClose();
-                // _runFilter(_searchBarController.text.trim());
-              }
-              else {
-                taskBox = await Hive.openBox<HiveDatabase>('taskBox');
-                contexts.read<TaskCubit>().updateHiveTaskStatus(index, "false", listOfTask);
-                HiveDatabase.HiveClose();
-                // _runFilter(_searchBarController.text.trim());
-              }
-          },
+        leading: Column(
+          children: [
+            Checkbox(
+              value: toBoolean(listOfTask[index].isDone),
+              onChanged: (val) async {
+                  if (val == true) {
+                    // List<Tasks> list = await HiveDatabase.getAllItems();
+                    taskBox = await Hive.openBox<HiveDatabase>('taskBox');
+                    contexts.read<TaskCubit>().updateHiveTaskStatus(index, "true", listOfTask);
+                    // HiveDatabase.HiveClose();
+                    // _runFilter(_searchBarController.text.trim());
+                  }
+                  else {
+                    taskBox = await Hive.openBox<HiveDatabase>('taskBox');
+                    contexts.read<TaskCubit>().updateHiveTaskStatus(index, "false", listOfTask);
+                    // HiveDatabase.HiveClose();
+                    // _runFilter(_searchBarController.text.trim());
+                  }
+              },
+            ),
+
+          ],
         ),
         title: Text(listOfTask[index].title,
           style: const TextStyle(
@@ -69,7 +75,7 @@ class ListViewCard extends StatelessWidget{
                 height: 30,
                 child: Row(
                   // crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     IconButton(
                         color: Colors.black,
@@ -83,12 +89,16 @@ class ListViewCard extends StatelessWidget{
                         onPressed: ()  async {
                           taskBox = await Hive.openBox<HiveDatabase>('taskBox');
                           contexts.read<TaskCubit>().deleteHiveTask(index, listOfTask);
-                          HiveDatabase.HiveClose();
+                          // contexts.read<TaskCubit>().deleteTask(index, listOfTask);
+                          // HiveDatabase.HiveClose();
                           Util.snackBar(contexts, "Work has been deleted...");
                           // _runFilter(_searchBarController.text.trim());
                         },
                         icon: const Icon(Icons.delete)
-                    )
+                    ),
+                    Container( width:50, height: 50,
+                        child: Image(image: NetworkImage(listOfTask[index].imageTask)))
+
                   ],
                 ),
               )

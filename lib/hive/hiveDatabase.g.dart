@@ -23,13 +23,14 @@ class HiveDatabaseAdapter extends TypeAdapter<HiveDatabase> {
       finishedTime: fields[3] as String,
       status: fields[4] as String,
       isDone: fields[5] as String,
+      imageTask: fields[6] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, HiveDatabase obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -41,7 +42,9 @@ class HiveDatabaseAdapter extends TypeAdapter<HiveDatabase> {
       ..writeByte(4)
       ..write(obj.status)
       ..writeByte(5)
-      ..write(obj.isDone);
+      ..write(obj.isDone)
+      ..writeByte(6)
+      ..write(obj.imageTask);
   }
 
   @override

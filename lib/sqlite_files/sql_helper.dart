@@ -11,7 +11,8 @@ class SQLHelper {
       dueDate Text,
       finishedTime Text,
       status Text,
-      isDone Text
+      isDone Text,
+      imageTask Text
       )
       """
     );
@@ -27,7 +28,7 @@ class SQLHelper {
     );
   }
 
-  static Future<int> createItem(final Task newTask) async{
+  static Future<int> createItem(final Tasks newTask) async{
     final db = await SQLHelper.db();
     int id = await db.insert(
         "items",
@@ -37,10 +38,10 @@ class SQLHelper {
     return id;
   }
 
-  static Future<List<Task>> getAllItems() async {
+  static Future<List<Tasks>> getAllItems() async {
     final db = await SQLHelper.db();
     final List<Map<String, dynamic>> result = await db.query("items");
-    return result.map(Task.fromMap).toList();
+    return result.map(Tasks.fromMap).toList();
   }
 
   static Future<List<Map<String, dynamic>>> searchItem(String title) async{
@@ -48,7 +49,7 @@ class SQLHelper {
     return db.query("items", where: "title LIKE ?", whereArgs: ['%$title%']);
   }
 
-  static Future<int> updateItem(final Task updatedTask) async {
+  static Future<int> updateItem(final Tasks updatedTask) async {
     final db = await SQLHelper.db();
     final result = await db.update(
         "items", updatedTask.toMap(),

@@ -41,6 +41,10 @@ dependencies:
   intl: ^0.17.0
   hive: ^2.2.3
   hive_flutter: ^1.1.0
+  image_picker: ^1.0.6
+  firebase_core: ^2.24.2
+  firebase_crashlytics: ^3.4.9
+  firebase_storage: ^11.6.0
 
 
 dev_dependencies:

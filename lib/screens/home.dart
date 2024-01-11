@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:simple_todo_list_app/bloc/cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simple_todo_list_app/hive/hiveDatabase.dart';
 import 'package:simple_todo_list_app/screens/bottom_sheet.dart';
 import 'package:simple_todo_list_app/sqlite_files/sql_helper.dart';
+import '../hive/hiveBox.dart';
 import '../model_layer/task.dart';
 import 'list_view_card.dart';
 
@@ -31,7 +33,7 @@ class _HomeState extends State<Home> {
     super.initState();
   }
 
-  void showForm(int? id, int index, List<Task> listOfTask) {
+  void showForm(int? id, int index, List<Tasks> listOfTask) {
 
     if(id != null){
       final existingItem = listOfTask.firstWhere((element) => element.id == id);
@@ -63,10 +65,10 @@ class _HomeState extends State<Home> {
           ),
           floatingActionButton: FloatingActionButton(
               onPressed: () async {
-                // List<Task> list = await SQLHelper.getAllItems();
-                HiveDatabase.HiveReopen();
-                List<Task> list = await HiveDatabase.getAllItems();
-                HiveDatabase.HiveClose();
+                // List<Tasks> list = await SQLHelper.getAllItems();
+                taskBox = await Hive.openBox<HiveDatabase>('taskBox');
+                List<Tasks> list = await HiveDatabase.getAllItems();
+                // HiveDatabase.HiveClose();
                 _titleController.text='';
                 _dueDateController.text='';
                 _finishedTimeController.text='';

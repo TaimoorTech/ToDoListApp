@@ -1,7 +1,7 @@
 part of 'cubit.dart';
 
 class TaskListing{
-  List<Task> listOfTasks;
+  List<Tasks> listOfTasks;
 
   TaskListing({
     required this.listOfTasks
